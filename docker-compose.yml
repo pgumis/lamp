@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+    apache:
+        build: './apache'
+        container_name: apache
+        restart: unless-stopped
+        ports: 
+            - 6666:80
+        volumes:
+            - ./public_html:/usr/local/apache2/htdocs
+            - ./cert/:/usr/local/apache2/cert/
+        depends_on:
+            - php
+            - mysql
+        networks:
+            - backend
+            - frontend
+    php:
+        build: './php'
+        container_name: php
+        restart: unless-stopped
+        networks:
+            - backend
+        volumes:                                                            
+            - ./public_html:/usr/local/apache2/htdocs
+            - ./tmp:/usr/local/tmp
+    mysql:
+        build: './mysql'
+        container_name: mysql
+        restart: unless-stopped
+        networks:
+            - backend
+        volumes:
+            - ./database:/var/lib/mysql
+networks: 
+  backend:
+  frontend:
