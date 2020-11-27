@@ -1,0 +1,6 @@
+FROM httpd:2.4
+RUN apt-get -y update; \
+    apt-get -y upgrade;
+
+EXPOSE 6666
+
